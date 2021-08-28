@@ -18,5 +18,5 @@ yum update
 
 
 ```
-wget --no-check-certificate -O AutoReinstall.sh https://raw.githubusercontent.com/john8911/AutoReinstall-DD/master/AutoReinstall.sh && chmod +x AutoReinstall.sh && ./AutoReinstall.sh
+wget --no-check-certificate -O AutoReinstall.sh https://raw.githubusercontent.com/hiCasper/Shell/master/AutoReinstall.sh && chmod +x AutoReinstall.sh && ./AutoReinstall.sh
 ```
