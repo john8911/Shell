@@ -2,7 +2,7 @@
 
 if [[ $EUID -ne 0 ]]; then
     clear
-    echo "错误: 必须以root用户身份运行!" 1>&2
+    echo "Error: This script must be run as root!" 1>&2
     exit 1
 fi
 
@@ -54,9 +54,9 @@ function GetIp() {
 }
 
 function UpdateIp() {
-  read -r -p "IP地址: " MAINIP
-  read -r -p "网关: " GATEWAYIP
-  read -r -p "子网掩码: " NETMASK
+  read -r -p "Your IP: " MAINIP
+  read -r -p "Your Gateway: " GATEWAYIP
+  read -r -p "Your Netmask: " NETMASK
 }
 
 function SetNetwork() {
@@ -89,7 +89,7 @@ function NetMode() {
   CopyRight
 
   if [ "$isAuto" == '0' ]; then
-    read -r -p "使用DHCP自动配置网络? [Y/n]:" input
+    read -r -p "Using DHCP to configure network automatically? [Y/n]:" input
     case $input in
       [yY][eE][sS]|[yY]) NETSTR='' ;;
       [nN][oO]|[nN]) isAuto='1' ;;
@@ -101,15 +101,15 @@ function NetMode() {
     GetIp
     ipCheck
     if [ $? -ne 0 ]; then
-      echo -e "检测ip时发生错误,请手工输入!\n"
+      echo -e "Error occurred when detecting ip. Please input manually.\n"
       UpdateIp
     else
       CopyRight
       echo "IP: $MAINIP"
-      echo "网关: $GATEWAYIP"
-      echo "子网掩码: $NETMASK"
+      echo "Gateway: $GATEWAYIP"
+      echo "Netmask: $NETMASK"
       echo -e "\n"
-      read -r -p "确定? [Y/n]:" input
+      read -r -p "Confirm? [Y/n]:" input
       case $input in
         [yY][eE][sS]|[yY]) ;;
         [nN][oO]|[nN])
@@ -118,7 +118,7 @@ function NetMode() {
           ipCheck
           [[ $? -ne 0 ]] && {
             clear
-            echo -e "输入错误!\n"
+            echo -e "Input error!\n"
             exit 1
           }
         ;;
@@ -139,14 +139,14 @@ function Start() {
   fi
 
   if [ "$isAuto" == '0' ]; then
-    echo "使用DHCP自动配置网络."
+    echo "Using DHCP mode."
   else
     echo "IP: $MAINIP"
-    echo "网关: $GATEWAYIP"
-    echo "子网掩码: $NETMASK"
+    echo "Gateway: $GATEWAYIP"
+    echo "Netmask: $NETMASK"
   fi
 
-  [[ "$isCN" == '1' ]] && echo "使用手动IP模式."
+  [[ "$isCN" == '1' ]] && echo "Using domestic mode."
 
   if [ -f "/tmp/InstallNET.sh" ]; then
     rm -f /tmp/InstallNET.sh
@@ -192,16 +192,16 @@ function Start() {
     9) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 20.04 -v 64 -a $NETSTR $UMIRROR ;;
     10)
       echo -e "\n"
-      read -r -p "自定义镜像URL: " imgURL
+      read -r -p "Custom image URL: " imgURL
       echo -e "\n"
-      read -r -p "确定要重新安装吗? [y/N]: " input
+      read -r -p "Are you sure start reinstall? [y/N]: " input
       case $input in
         [yY][eE][sS]|[yY]) bash /tmp/InstallNET.sh $NETSTR -dd $imgURL $DMIRROR ;;
-        *) clear; echo "被用户取消!"; exit 1;;
+        *) clear; echo "Canceled by user!"; exit 1;;
       esac
       ;;
     0) exit 0;;
-    *) echo "输入错误!"; exit 1;;
+    *) echo "Wrong input!"; exit 1;;
   esac
 }
 
